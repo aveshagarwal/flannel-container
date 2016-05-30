@@ -1,0 +1,17 @@
+[Unit]
+Description=Flanneld overlay address etcd agent
+After=network.target
+After=network-online.target
+Wants=network-online.target
+After=etcd.service
+Before=docker.service
+
+[Service]
+ExecStart=/bin/runc start flannel
+ExecStop=/bin/runc kill flannel
+Restart=on-failure
+WorkingDirectory=$DESTDIR
+
+[Install]
+WantedBy=multi-user.target
+RequiredBy=docker.service
