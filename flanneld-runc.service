@@ -7,7 +7,7 @@ After=etcd.service
 Before=docker.service
 
 [Service]
-ExecStart=/bin/runc start flannel
+ExecStart=/bin/runc run flannel
 ExecStop=/bin/runc kill flannel
 Restart=on-failure
 WorkingDirectory=$DESTDIR
