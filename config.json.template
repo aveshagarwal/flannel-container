@@ -12,9 +12,10 @@
 		],
 		"env": [
 			"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                        "FLANNELD_ETCD_PREFIX=/atomic.io/network",
+                        "FLANNELD_ETCD_ENDPOINTS=$ETCD_ENDPOINTS",
 			"TERM=xterm",
-			"FLANNELD_ETCD_ENDPOINTS=http://127.0.0.1:2379",
-			"FLANNELD_ETCD_PREFIX=/atomic.io/network"
+			"NAME=$NAME"
 		],
 		"cwd": "/",
 		"capabilities": [
@@ -66,32 +67,12 @@
 		"path": "rootfs",
 		"readonly": true
 	},
-	"hostname": "runc",
+	"hostname": "flannel",
 	"mounts": [
 		{
 			"destination": "/proc",
 			"type": "proc",
 			"source": "proc"
-		},
-		{
-			"type": "bind",
-			"destination": "/run",
-			"source": "/run",
-			"options": [
-				"rbind",
-				"rw",
-				"mode=755"
-			]
-		},
-		{
-			"type": "bind",
-			"destination": "/usr/lib/systemd/system/docker.service.d",
-			"source": "/usr/lib/systemd/system/docker.service.d",
-			"options": [
-				"rbind",
-				"rw",
-				"mode=755"
-			]
 		},
                 {
                         "type": "bind",
@@ -160,7 +141,27 @@
 				"relatime",
 				"ro"
 			]
-		}
+		},
+                {
+                        "type": "bind",
+                        "source": "/etc/systemd/system/docker.service.d/$NAME.conf",
+                        "destination": "/etc/systemd/system/docker.service.d/flannel.conf",
+                        "options": [
+                                "rbind",
+                                "rw",
+                                "mode=755"
+                        ]
+                },
+                {
+                        "destination": "/run/flannel",
+                        "type": "bind",
+			"source": "${RUN_DIRECTORY}/${NAME}",
+                        "options": [
+                                "rw",
+                                "rbind",
+                                "rprivate"
+                        ]
+                }
 	],
 	"hooks": {},
 	"linux": {
