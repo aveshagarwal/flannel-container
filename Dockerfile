@@ -14,12 +14,12 @@ LABEL Vendor="Red Hat" \
       Architecture="x86_64" \
       Summary="Flannel is an etcd driven address (most commonly ip addresses) management agent"
 
-RUN yum-config-manager --enable rhel-7-server-extras-rpms || :
-RUN yum -y install flannel && yum clean all
-
 LABEL RUN /usr/bin/docker run -d --privileged --net=host \$OPT1 -v /usr/lib/systemd/system/docker.service.d:/usr/lib/systemd/system/docker.service.d -v /var/run:/var/run --name \$NAME \$IMAGE \$OPT2 \$OPT3
 
-ADD flanneld-run.sh flanneld-docker-env.sh /usr/bin/
+RUN yum-config-manager --enable rhel-7-server-extras-rpms || :
+RUN yum --enablerepo=rhel-7-server-extras-rpms -y install flannel && yum clean all
+
+ADD flanneld-run.sh /usr/bin/
 
 # System container files
 ADD tmpfiles.template service.template manifest.json config.json.template /exports/

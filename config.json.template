@@ -153,9 +153,9 @@
                         ]
                 },
                 {
+			"source": "${RUN_DIRECTORY}/${NAME}",
                         "destination": "/run/flannel",
                         "type": "bind",
-			"source": "${RUN_DIRECTORY}/${NAME}",
                         "options": [
                                 "rw",
                                 "rbind",
