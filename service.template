@@ -10,6 +10,7 @@ Before=docker.service
 Type=notify
 ExecStart=$EXEC_START
 ExecStop=$EXEC_STOP
+ExecStopPost=/bin/rm /etc/systemd/system/docker.service.d/$NAME.conf
 Restart=on-failure
 WorkingDirectory=$DESTDIR
 RuntimeDirectory=${NAME}
